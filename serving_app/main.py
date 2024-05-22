@@ -285,6 +285,7 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
 
         @server.post("/smart_segmentation")
         def smart_segmentation(response: Response, request: Request):
+            print("Received request on smart_segmentation!")
             try:
                 smtool_state = request.state.context
                 api = request.state.api
