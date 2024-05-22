@@ -16,7 +16,7 @@
         "deployed_nn_object_segmentation"
     ],
     "community_agent": false,
-    "docker_image": "supervisely/serve-matte-anything:1.0.0",
+    "docker_image": "supervisely/serve-matte-anything:1.0.1",
     "instance_version": "6.9.22",
     "entrypoint": "python3 -m uvicorn serving_app.main:m.app --app-dir ./serve --host 0.0.0.0 --port 8000 --ws websockets",
     "port": 8000,

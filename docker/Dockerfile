@@ -32,5 +32,7 @@ RUN pip3 install fairscale
 
 RUN python3 -m pip install supervisely==6.73.82
 RUN pip3 install urllib3==1.26.17
+RUN pip3 install starlette==0.35.1
 
-ADD pretrained /
+RUN mkdir -p pretrained
+ADD pretrained /pretrained/
