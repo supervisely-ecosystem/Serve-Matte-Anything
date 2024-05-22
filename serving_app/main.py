@@ -81,6 +81,7 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
             columns=list(sam_model_data[0].keys()),
             rows=[list(element.values()) for element in sam_model_data],
         )
+        self.sam_table.select_row(2)
         sam_table_f = Field(
             content=self.sam_table,
             title="Pretrained Segment Anything models",
@@ -89,9 +90,25 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
             columns=list(vitmatte_model_data[0].keys()),
             rows=[list(element.values()) for element in vitmatte_model_data],
         )
+        self.vitmatte_table.select_row(3)
         vitmatte_table_f = Field(
             content=self.vitmatte_table,
             title="Pretrained ViTMatte models",
+        )
+        self.erode_input = InputNumber(value=20, min=1, max=30, step=1)
+        erode_input_f = Field(
+            content=self.erode_input,
+            title="Erode kernel size",
+        )
+        self.dilate_input = InputNumber(value=20, min=1, max=30, step=1)
+        dilate_input_f = Field(
+            content=self.dilate_input,
+            title="Dilate kernel size",
+        )
+        erode_dilate_inputs = Container(
+            widgets=[erode_input_f, dilate_input_f, Empty()],
+            direction="horizontal",
+            fractions=[1, 1, 2],
         )
         self.gr_dino_checkbox = Checkbox(content="use Grounding DINO", checked=False)
         gr_dino_checkbox_f = Field(
@@ -135,6 +152,7 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
         dino_thresh_inputs = Container(
             widgets=[dino_text_thresh_input_f, dino_box_thresh_input_f, Empty()],
             direction="horizontal",
+            fractions=[1, 1, 2],
         )
         dino_thresh_inputs.hide()
 
@@ -155,6 +173,7 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
             widgets=[
                 sam_table_f,
                 vitmatte_table_f,
+                erode_dilate_inputs,
                 gr_dino_checkbox_f,
                 gr_dino_table_f,
                 dino_text_input_f,
@@ -354,8 +373,8 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
             mask = masks[0][0].astype(np.uint8) * 255
             # mask_im = Image.fromarray(mask)
             # mask_im.save("sam_mask.png")
-            erode_kernel_size = 10
-            dilate_kernel_size = 10
+            erode_kernel_size = self.erode_input.get_value()
+            dilate_kernel_size = self.dilate_input.get_value()
             trimap = self.generate_trimap(
                 mask, erode_kernel_size, dilate_kernel_size
             ).astype(np.float32)
