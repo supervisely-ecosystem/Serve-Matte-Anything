@@ -1,0 +1,38 @@
+[
+    {
+        "Model": "ViTMatte-S (Composition-1k)",
+        "SAD": "21.46",
+        "MSE": "3.3",
+        "Grad": "7.24",
+        "Conn": "16.21",
+        "weights": "/pretrained/vitmatte_s_com.pth",
+        "config": "./configs/vitmatte_s.py"
+    },
+    {
+        "Model": "ViTMatte-S (Distinctionctions-646)",
+        "SAD": "21.22",
+        "MSE": "2.1",
+        "Grad": "8.78",
+        "Conn": "17.55",
+        "weights": "/pretrained/vitmatte_s_dis.pth",
+        "config": "./configs/vitmatte_s.py"
+    },
+    {
+        "Model": "ViTMatte-B (Composition-1k)",
+        "SAD": "20.33",
+        "MSE": "3.0",
+        "Grad": "6.74",
+        "Conn": "14.78",
+        "weights": "/pretrained/vitmatte_b_com.pth",
+        "config": "./configs/vitmatte_b.py"
+    },
+    {
+        "Model": "ViTMatte-B (Distinctionctions-646)",
+        "SAD": "17.05",
+        "MSE": "1.5",
+        "Grad": "7.03",
+        "Conn": "12.95",
+        "weights": "/pretrained/vitmatte_b_dis.pth",
+        "config": "./configs/vitmatte_b.py"
+    }
+]

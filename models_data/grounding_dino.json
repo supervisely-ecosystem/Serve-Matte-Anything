@@ -1,0 +1,18 @@
+[
+    {
+        "Model": "GroundingDINO-T",
+        "backbone": "Swin-T",
+        "Datasets": "O365, GoldG, Cap4M",
+        "box AP on COCO": "57.2",
+        "config": "./GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py",
+        "weights": "/pretrained/groundingdino_swint_ogc.pth"
+    },
+    {
+        "Model": "GroundingDINO-B",
+        "backbone": "Swin-B",
+        "Datasets": "COCO, O365, GoldG, Cap4M, OpenImage, ODinW-35, RefCOCO",
+        "box AP on COCO": "56.7",
+        "config": "./GroundingDINO/groundingdino/config/GroundingDINO_SwinB_cogcoor.py",
+        "weights": "/pretrained/groundingdino_swinb_cfg.pth"
+    }
+]

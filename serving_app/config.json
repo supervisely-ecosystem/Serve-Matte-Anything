@@ -1,0 +1,27 @@
+{
+    "name": "Serve Matte Anything",
+    "type": "app",
+    "version": "2.0.0",
+    "description": "Deploy Matte Anything as REST API service",
+    "categories": [
+        "neural network",
+        "images",
+        "interactive segmentation",
+        "image matting",
+        "serve"
+    ],
+    "need_gpu": true,
+    "gpu": "required",
+    "session_tags": [
+        "deployed_nn_object_segmentation"
+    ],
+    "community_agent": false,
+    "docker_image": "supervisely/serve-matte-anything:1.0.0",
+    "instance_version": "6.9.22",
+    "entrypoint": "python -m uvicorn serving_app.main:m.app --app-dir ./serve --host 0.0.0.0 --port 8000 --ws websockets",
+    "port": 8000,
+    "task_location": "application_sessions",
+    "license": {
+        "type": "MIT"
+    }
+}

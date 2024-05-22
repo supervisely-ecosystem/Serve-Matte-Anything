@@ -1,0 +1,23 @@
+[
+    {
+        "Model": "ViT-B SAM",
+        "Number of parameters": "91M",
+        "Size": "375 MB",
+        "mIoU": "69",
+        "weights": "/pretrained/sam_vit_b.pth"
+    },
+    {
+        "Model": "ViT-L SAM",
+        "Number of parameters": "308M",
+        "Size": "1.25 GB",
+        "mIoU": "72",
+        "weights": "/pretrained/sam_vit_l.pth"
+    },
+    {
+        "Model": "ViT-H SAM",
+        "Number of parameters": "636M",
+        "Size": "2.56 GB",
+        "mIoU": "74",
+        "weights": "/pretrained/sam_vit_h.pth"
+    }
+]
