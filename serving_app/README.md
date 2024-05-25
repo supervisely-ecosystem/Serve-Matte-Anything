@@ -1,4 +1,5 @@
 <div align="center" markdown>
+<img src="https://github.com/supervisely-ecosystem/Serve-Matte-Anything/blob/master/media/poster.png"/>  
   
 
 # Serve Matte Anything
