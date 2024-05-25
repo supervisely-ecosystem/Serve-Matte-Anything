@@ -1,5 +1,5 @@
 <div align="center" markdown>
-<img src="https://github.com/supervisely-ecosystem/Serve-Matte-Anything/assets/91027877/b74f6c4a-885b-48f8-8132-59a4320c4577"/>  
+<img src="https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v0.0.1/poster.png"/>  
 
 # Serve Matte Anything
 
@@ -24,17 +24,17 @@ Matte Anything, a combination of several machine learning models proposed by res
 
 Matte Anything firstly employs Segment Anything Model to generate a segmentation mask for target object on input image. Subsequently, open-vocabulary object detection model (GroudingDINO) is used to detect commonly occurring transparent objects. Trimaps are then generated based on the segmentation and transparent object detection results, which are subsequently passed into image matting model - ViTMatte.
 
-![matte-anything](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/assets/91027877/4f49e833-3d11-4930-bb7a-76760f0510c7)
+![matte anything](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v0.0.1/matte-anything.png)
 
 # How To Run
 
 **Step 1.** Select pretrained model architecture and press the **Serve** button
 
-![pretrained_models](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/assets/91027877/c91f47c8-b9a0-47a6-ad23-2d6f11948eba)
+![pretrained_models](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v0.0.1/pretrained_models.png)
 
 **Step 2.** Wait for the model to deploy
 
-![deployed](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/assets/91027877/50bfc137-61db-4c15-b6d4-f0d662883044)
+![deployed](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v0.0.1/deployed.png)
 
 # Example: apply Matte-Anything to image in labeling tool
 
