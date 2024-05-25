@@ -20,6 +20,9 @@
     "instance_version": "6.9.22",
     "entrypoint": "python3 -m uvicorn serving_app.main:m.app --app-dir ./serve --host 0.0.0.0 --port 8000 --ws websockets",
     "port": 8000,
+    "icon": "https://github.com/supervisely-ecosystem/Serve-Matte-Anything/blob/master/media/icon.png",
+    "icon_cover": true,
+    "poster": "https://github.com/supervisely-ecosystem/Serve-Matte-Anything/blob/master/media/poster.png",
     "task_location": "application_sessions",
     "license": {
         "type": "MIT"
