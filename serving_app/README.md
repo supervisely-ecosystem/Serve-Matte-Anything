@@ -1,6 +1,5 @@
 <div align="center" markdown>
-<img src="https://github.com/supervisely-ecosystem/Serve-Matte-Anything/blob/master/media/poster.png"/>  
-  
+<img src="https://github.com/supervisely-ecosystem/Serve-Matte-Anything/assets/91027877/b74f6c4a-885b-48f8-8132-59a4320c4577"/>  
 
 # Serve Matte Anything
 
