@@ -38,6 +38,7 @@ from supervisely.app.widgets import (
     Container,
     Empty,
 )
+from re import findall
 
 
 load_dotenv("local.env")
@@ -201,6 +202,20 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
         DetectionCheckpointer(vitmatte).load(checkpoint_path)
         return vitmatte
 
+    def init_diffmatte(self, config_path, checkpoint_path):
+        cfg = LazyConfig.load(config_path)
+        cfg.difmatte.args["use_ddim"] = True
+        cfg.diffusion.steps = int(findall(r"\d+", "ddim10")[0])
+        model = instantiate(cfg.model)
+        diffusion = instantiate(cfg.diffusion)
+        cfg.difmatte.model = model
+        cfg.difmatte.diffusion = diffusion
+        difmatte = instantiate(cfg.difmatte)
+        difmatte.to(self.device)
+        difmatte.eval()
+        DetectionCheckpointer(difmatte).load(checkpoint_path)
+        return difmatte
+
     def generate_trimap(self, mask, erode_kernel_size=10, dilate_kernel_size=10):
         erode_kernel = np.ones((erode_kernel_size, erode_kernel_size), np.uint8)
         dilate_kernel = np.ones((dilate_kernel_size, dilate_kernel_size), np.uint8)
@@ -241,9 +256,16 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
         vitmatte_checkpoint_path = vitmatte_dict["weights"]
         if is_debug_session:
             vitmatte_checkpoint_path = "." + vitmatte_checkpoint_path
-        self.vitmatte = self.init_vitmatte(
-            vitmatte_config_path, vitmatte_checkpoint_path
-        )
+        if vitmatte_dict["Model"].startswith("DiffMatte"):
+            self.is_vitmatte = False
+            self.diffmatte = self.init_diffmatte(
+                vitmatte_config_path, vitmatte_checkpoint_path
+            )
+        else:
+            self.is_vitmatte = True
+            self.vitmatte = self.init_vitmatte(
+                vitmatte_config_path, vitmatte_checkpoint_path
+            )
         # load grounding dino if necessary
         if self.gr_dino_checkbox.is_checked():
             grounding_dino_row_index = self.gr_dino_table.get_selected_row_index()
@@ -415,6 +437,10 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
                     # trimap_im.save("trimap_after_dino.png")
                     # trimap[trimap == 128] = 0.5
 
+            # if not self.is_vitmatte:
+            #     trimap[trimap == 0.5] = 128
+            #     trimap[trimap == 1] = 255
+
             input = {
                 "image": torch.from_numpy(image_np).permute(2, 0, 1).unsqueeze(0) / 255,
                 "trimap": torch.from_numpy(trimap).unsqueeze(0).unsqueeze(0),
@@ -422,13 +448,15 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
 
             torch.cuda.empty_cache()
 
-            alpha = self.vitmatte(input)["phas"].flatten(0, 2)
-            alpha = alpha.detach().cpu().numpy()
+            if self.is_vitmatte:
+                alpha = self.vitmatte(input)["phas"].flatten(0, 2)
+                alpha = alpha.detach().cpu().numpy()
+            else:
+                alpha = self.diffmatte(input)
 
             torch.cuda.empty_cache()
 
             alpha = alpha[crop[0]["y"] : crop[1]["y"], crop[0]["x"] : crop[1]["x"], ...]
-            # alpha = np.multiply(alpha, 255)
             im = F.to_pil_image(alpha)
             im.save("alpha.png")
             with open("alpha.png", "rb") as image_file:

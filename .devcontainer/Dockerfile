@@ -31,6 +31,7 @@ RUN pip3 install fairscale
 
 RUN python3 -m pip install supervisely==6.73.82
 RUN pip3 install urllib3==1.26.17
+RUN pip3 install einops==0.8.0
 
 RUN apt-get -y install curl
 RUN apt -y install wireguard iproute2
