@@ -41,11 +41,15 @@ Matte Anything firstly employs Segment Anything Model to generate a segmentation
 
 Open your images project, open project settings, go to Visuals, select image matting as project labeling interface:
 
-https://private-user-images.githubusercontent.com/91027877/333764496-651ac146-61fc-4adc-88ce-0243da15dcf2.mp4
+<video width="100%" preload="auto" autoplay muted loop>
+    <source src="https://private-user-images.githubusercontent.com/91027877/333764496-651ac146-61fc-4adc-88ce-0243da15dcf2.mp4" type="video/mp4">
+</video>
 
 Select smart tool, create annotation class of shape 'Alpha mask' and draw a bounding box around target object on image (you can also adjust mask by adding positive and negative points if necessary):
 
-https://private-user-images.githubusercontent.com/91027877/333764530-d25e7ce4-81d8-46cf-a6de-dce891bc0b38.mp4
+<video width="100%" preload="auto" autoplay muted loop>
+    <source src="https://private-user-images.githubusercontent.com/91027877/333764530-d25e7ce4-81d8-46cf-a6de-dce891bc0b38.mp4" type="video/mp4">
+</video>
 
 # Acknowledgment
 
