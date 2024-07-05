@@ -37,6 +37,7 @@ from supervisely.app.widgets import (
     InputNumber,
     Container,
     Empty,
+    Switch,
 )
 from re import findall
 
@@ -156,6 +157,26 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
             fractions=[1, 1, 2],
         )
         dino_thresh_inputs.hide()
+        self.resize_input = Switch(switched=False)
+        resize_input_f = Field(
+            content=self.resize_input,
+            title="Resize input images",
+            description=(
+                "If selected, then input images will be resized to lower resolution. "
+                "This feature can be used in order to save GPU memory - it can be especially"
+                " useful when working with heavy models like DiffMatte"
+            ),
+        )
+        self.resolution_input = InputNumber(value=1300, min=1000, max=1920, step=100)
+        resolution_input_f = Field(
+            content=self.resolution_input,
+            title="Input image resolution",
+            description=(
+                "Bigger image side will be resized to selected resolution, smaller "
+                "image side will be resized proportionally"
+            ),
+        )
+        resolution_input_f.hide()
 
         @self.gr_dino_checkbox.value_changed
         def change_dino_ui(value):
@@ -170,6 +191,13 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
                 dino_text_input_f.hide()
                 dino_thresh_inputs.hide()
 
+        @self.resize_input.value_changed
+        def change_resize(value):
+            if value:
+                resolution_input_f.show()
+            else:
+                resolution_input_f.hide()
+
         custom_gui = Container(
             widgets=[
                 sam_table_f,
@@ -179,6 +207,8 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
                 gr_dino_table_f,
                 dino_text_input_f,
                 dino_thresh_inputs,
+                resize_input_f,
+                resolution_input_f,
             ],
             gap=25,
         )
@@ -437,14 +467,33 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
                     # trimap_im.save("trimap_after_dino.png")
                     # trimap[trimap == 128] = 0.5
 
-            # if not self.is_vitmatte:
-            #     trimap[trimap == 0.5] = 128
-            #     trimap[trimap == 1] = 255
-
-            input = {
-                "image": torch.from_numpy(image_np).permute(2, 0, 1).unsqueeze(0) / 255,
-                "trimap": torch.from_numpy(trimap).unsqueeze(0).unsqueeze(0),
-            }
+            if not self.resize_input.is_switched():
+                input = {
+                    "image": torch.from_numpy(image_np).permute(2, 0, 1).unsqueeze(0)
+                    / 255,
+                    "trimap": torch.from_numpy(trimap).unsqueeze(0).unsqueeze(0),
+                }
+            else:
+                resolution = self.resolution_input.get_value()
+                original_width, original_height = image_np.shape[1], image_np.shape[0]
+                scaler = max(original_width, original_height) / resolution
+                resized_width = int(original_width / scaler)
+                resized_height = int(original_height / scaler)
+                image_np = image_np.transpose(2, 0, 1)
+                image_np = torch.from_numpy(image_np)
+                image_np = torch.unsqueeze(image_np, 0)
+                image_np = torch.nn.functional.interpolate(
+                    image_np, (resized_height, resized_width), mode="nearest"
+                )
+                trimap = torch.from_numpy(trimap)
+                trimap = trimap.view(1, 1, trimap.shape[0], trimap.shape[1])
+                trimap = torch.nn.functional.interpolate(
+                    trimap, (resized_height, resized_width), mode="nearest"
+                )
+                input = {
+                    "image": image_np / 255,
+                    "trimap": trimap,
+                }
 
             torch.cuda.empty_cache()
 
@@ -454,11 +503,23 @@ class MatteAnythingModel(sly.nn.inference.PromptableSegmentation):
             else:
                 alpha = self.diffmatte(input)
 
+            if self.resize_input.is_switched():
+                alpha = torch.from_numpy(alpha)
+                alpha = alpha.view(1, 1, alpha.shape[0], alpha.shape[1])
+                alpha = torch.nn.functional.interpolate(
+                    alpha, (original_height, original_width), mode="nearest"
+                )
+                alpha = alpha.squeeze().numpy()
+
             torch.cuda.empty_cache()
 
             alpha = alpha[crop[0]["y"] : crop[1]["y"], crop[0]["x"] : crop[1]["x"], ...]
-            im = F.to_pil_image(alpha)
-            im.save("alpha.png")
+            if self.is_vitmatte:
+                im = F.to_pil_image(alpha)
+                im.save("alpha.png")
+            else:
+                alpha = cv2.cvtColor(alpha, cv2.COLOR_GRAY2RGB)
+                cv2.imwrite("alpha.png", alpha)
             with open("alpha.png", "rb") as image_file:
                 encoded_string = base64.b64encode(image_file.read())
             os.remove("alpha.png")
