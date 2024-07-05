@@ -22,7 +22,7 @@
 
 Matte Anything, a combination of several machine learning models proposed by researchers from Huazhong University of Science and Technology, unites segmentation and matting models into a single pipeline to produce accurate alpha channels for images with high quality and simple user interaction.
 
-Matte Anything firstly employs Segment Anything Model to generate a segmentation mask for target object on input image. Subsequently, open-vocabulary object detection model (GroudingDINO) is used to detect commonly occurring transparent objects. Trimaps are then generated based on the segmentation and transparent object detection results, which are subsequently passed into image matting model - ViTMatte.
+Matte Anything firstly employs Segment Anything Model to generate a segmentation mask for target object on input image. Subsequently, open-vocabulary object detection model (GroudingDINO) is used to detect commonly occurring transparent objects. Trimaps are then generated based on the segmentation and transparent object detection results, which are subsequently passed into image matting model - ViTMatte (we also added opportunity to use [DiffMatte](https://arxiv.org/pdf/2312.05915)).
 
 ![matte anything](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v0.0.1/matte-anything.png)
 
@@ -52,5 +52,5 @@ Select smart tool, create annotation class of shape 'Alpha mask' and draw a boun
 
 # Acknowledgment
 
-This app is based on the great work [Matte Anything](https://github.com/hustvl/Matte-Anything).
+This app is based on the great works [Matte Anything](https://github.com/hustvl/Matte-Anything) and [DiffMatte](https://github.com/YihanHu-2022/DiffMatte).
 

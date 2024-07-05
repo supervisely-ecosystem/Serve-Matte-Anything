@@ -3,5 +3,3 @@ local.env
 supervisely.env
 **/__pycache__/
 Matte-Anything/
-diffmatte_configs/
-diffmatte_modeling/

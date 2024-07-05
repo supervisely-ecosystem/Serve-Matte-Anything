@@ -34,5 +34,23 @@
         "Conn": "12.95",
         "weights": "/pretrained/vitmatte_b_dis.pth",
         "config": "./configs/vitmatte_b.py"
+    },
+    {
+        "Model": "DiffMatte-ViTS 1024 (Composition-1k)",
+        "SAD": "17.15",
+        "MSE": "2.26",
+        "Grad": "5.13",
+        "Conn": "11.42",
+        "weights": "/pretrained/DiffMatte_ViTS_Com_1024.pth",
+        "config": "./diffmatte_configs/ViTS_1024.py"
+    },
+    {
+        "Model": "DiffMatte-ViTB (Composition-1k)",
+        "SAD": "18.63",
+        "MSE": "2.54",
+        "Grad": "5.82",
+        "Conn": "13.10",
+        "weights": "/pretrained/DiffMatte_ViTB_Com.pth",
+        "config": "./diffmatte_configs/ViTB.py"
     }
 ]
