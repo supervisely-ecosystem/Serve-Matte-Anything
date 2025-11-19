@@ -7,6 +7,7 @@
   <a href="#Overview">Overview</a> •
   <a href="#How-To-Run">How To Run</a> •
   <a href="#example-apply-matte-anything-to-image-in-labeling-tool">Example: apply Matte-Anything to image in labeling tool</a> •
+  <a href="#adjusting-erode-and-dilate-settings">Adjusting Erode and Dilate Settings</a> •
   <a href="#Acknowledgment">Acknowledgment</a>
 </p>
 
@@ -49,6 +50,17 @@ Select smart tool, create annotation class of shape 'Alpha mask' and draw a boun
 <video width="100%" preload="auto" autoplay muted loop>
     <source src="https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v0.0.1/matting_example.mp4" type="video/mp4">
 </video>
+
+# Adjusting Erode and Dilate Settings
+
+If you are using Serve Matte Anything in the smart tool, you can try adjusting the "erode" (1) and "dilate" (2) settings for your dataset.
+
+These settings control the "fringe" or the size of soft edges around the prediction and differ from padding - they don't correspond to pixels or percentages. Instead, they define the size of a square matrix (an n x n structuring element) that moves across the image to perform morphological operations like erosion or dilation. This is why it's important to adjust these values to suit your specific dataset. In general, it's recommended to use a small kernel size for objects with simple contours, such as an apple, and larger kernels for objects with complex outlines, like a person with curly hair.
+
+In this example, set both values to 1, which resulted in clear masks on my images without the need for additional manual adjustments.
+
+![Adjusting Erode and Dilate Settings](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v1.0.0/image.png)
+![Adjusting Erode and Dilate Settings](https://github.com/supervisely-ecosystem/Serve-Matte-Anything/releases/download/v1.0.0/image.1.png)
 
 # Acknowledgment
 
