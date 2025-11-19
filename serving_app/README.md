@@ -53,7 +53,7 @@ Select smart tool, create annotation class of shape 'Alpha mask' and draw a boun
 
 # Adjusting Erode and Dilate Settings
 
-If you are using Serve Matte Anything in the smart tool, you can try adjusting the "erode" (1) and "dilate" (2) settings for your dataset.
+If you are using Serve Matte Anything in the smart tool, you can try adjusting the "erode" ① and "dilate" ② settings for your dataset.
 
 These settings control the "fringe" or the size of soft edges around the prediction and differ from padding - they don't correspond to pixels or percentages. Instead, they define the size of a square matrix (an n x n structuring element) that moves across the image to perform morphological operations like erosion or dilation. This is why it's important to adjust these values to suit your specific dataset. In general, it's recommended to use a small kernel size for objects with simple contours, such as an apple, and larger kernels for objects with complex outlines, like a person with curly hair.
 
