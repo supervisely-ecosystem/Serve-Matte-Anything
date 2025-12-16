@@ -30,10 +30,12 @@ RUN pip3 install opencv-python==4.8.0.74
 RUN pip3 install gradio==3.41.2
 RUN pip3 install fairscale
 
-RUN python3 -m pip install supervisely==6.73.82
+RUN python3 -m pip install supervisely==6.73.486
 RUN pip3 install urllib3==1.26.17
 RUN pip3 install starlette==0.35.1
 RUN pip3 install einops==0.8.0
 
 RUN mkdir -p pretrained
 ADD pretrained /pretrained/
+
+LABEL python_sdk_version="6.73.486"
